@@ -2,8 +2,6 @@ using Investigate.API.Models;
 
 namespace Investigate.API.DTOs
 {
-    // ── Application ──────────────────────────────────────────────────────────
-
     public record CreateApplicationRequest(
         Guid UserId,
         Guid PropertyId,
@@ -23,8 +21,6 @@ namespace Investigate.API.DTOs
         DateTime SubmittedAt,
         string? Notes
     );
-
-    // ── Applicant ────────────────────────────────────────────────────────────
 
     public record CreateApplicantRequest(
         Guid ApplicationId,
@@ -53,8 +49,6 @@ namespace Investigate.API.DTOs
         string? EmergencyContactEmail
     );
 
-    // ── Employment ───────────────────────────────────────────────────────────
-
     public record CreateEmploymentRequest(
         Guid ApplicantId,
         string EmployerName,
@@ -77,8 +71,6 @@ namespace Investigate.API.DTOs
         DateTime? EndDate,
         decimal? AnnualIncome
     );
-
-    // ── Rental History ───────────────────────────────────────────────────────
 
     public record CreateRentalHistoryRequest(
         Guid ApplicationId,
@@ -103,8 +95,6 @@ namespace Investigate.API.DTOs
         decimal? WeeklyRent,
         string? ReasonForLeaving
     );
-
-    // ── Tenancy Agreement ────────────────────────────────────────────────────
 
     public record CreateAgreementRequest(
         Guid ApplicationId,
@@ -136,9 +126,6 @@ namespace Investigate.API.DTOs
         DateTime CreatedAt
     );
 
-    // ── Review ───────────────────────────────────────────────────────────────
-    // NOTE: ReviewerId is intentionally omitted from ReviewResponse — anonymity enforced at API layer
-
     public record CreateReviewRequest(
         Guid ReviewerId,
         Guid RevieweeId,
@@ -149,7 +136,6 @@ namespace Investigate.API.DTOs
 
     public record ReviewResponse(
         Guid ReviewId,
-        // ReviewerId deliberately excluded
         Guid RevieweeId,
         string ReviewerRole,
         int Rating,
@@ -157,12 +143,55 @@ namespace Investigate.API.DTOs
         DateTime CreatedAt
     );
 
-    // ── Reputation Score ─────────────────────────────────────────────────────
-
     public record ReputationScoreResponse(
         Guid UserId,
         decimal AverageRating,
         int TotalReviews,
         DateTime LastUpdated
+    );
+
+    public record CreateUserRequest(
+        string FirstName,
+        string LastName,
+        string Email,
+        string? Phone,
+        string Role
+    );
+
+    public record UserResponse(
+        Guid UserId,
+        string FirstName,
+        string LastName,
+        string Email,
+        string? Phone,
+        string Role,
+        DateTime CreatedAt
+    );
+
+    public record CreatePropertyRequest(
+        string Address,
+        string? Suburb,
+        string? Postcode,
+        string? State,
+        int? Bedrooms,
+        int? Bathrooms,
+        int? CarSpaces,
+        bool PetsAllowed,
+        decimal? WeeklyRent,
+        Guid? OrganisationId
+    );
+
+    public record PropertyResponse(
+        Guid PropertyId,
+        string Address,
+        string? Suburb,
+        string? Postcode,
+        string? State,
+        int? Bedrooms,
+        int? Bathrooms,
+        int? CarSpaces,
+        bool PetsAllowed,
+        decimal? WeeklyRent,
+        Guid? OrganisationId
     );
 }

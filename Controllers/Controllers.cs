@@ -337,4 +337,98 @@ namespace Investigate.API.Controllers
             ));
         }
     }
+
+    // ── Users ─────────────────────────────────────────────────────────────────
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UsersController : ControllerBase
+    {
+        private readonly AppDbContext _db;
+        public UsersController(AppDbContext db) => _db = db;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll() =>
+            Ok(await _db.Users.Select(u => ToResponse(u)).ToListAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            return user is null ? NotFound() : Ok(ToResponse(user));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateUserRequest req)
+        {
+            if (!Enum.TryParse<UserRole>(req.Role, out var role))
+                return BadRequest("Invalid Role. Valid values: Tenant, Landlord, Agent, Admin");
+
+            var user = new User
+            {
+                FirstName      = req.FirstName,
+                LastName       = req.LastName,
+                Email          = req.Email,
+                Phone          = req.Phone,
+                Role      = role
+
+            };
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+            return CreatedAtAction(nameof(Get), new { id = user.UserId }, ToResponse(user));
+        }
+
+        private static UserResponse ToResponse(User u) => new(
+            u.UserId, u.FirstName, u.LastName, u.Email,
+            u.Phone, u.Role.ToString(), u.CreatedAt
+        );
+    }
+
+    // ── Properties ───────────────────────────────────────────────────────────
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PropertiesController : ControllerBase
+    {
+        private readonly AppDbContext _db;
+        public PropertiesController(AppDbContext db) => _db = db;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll() =>
+            Ok(await _db.Properties.Select(p => ToResponse(p)).ToListAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var prop = await _db.Properties.FindAsync(id);
+            return prop is null ? NotFound() : Ok(ToResponse(prop));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreatePropertyRequest req)
+        {
+            var prop = new Property
+            {
+                Address        = req.Address,
+                Suburb         = req.Suburb,
+                Postcode       = req.Postcode,
+                State          = req.State,
+                Bedrooms       = req.Bedrooms,
+                Bathrooms      = req.Bathrooms,
+                CarSpaces      = req.CarSpaces,
+                PetsAllowed    = req.PetsAllowed,
+                WeeklyRent     = req.WeeklyRent,
+
+            };
+            _db.Properties.Add(prop);
+            await _db.SaveChangesAsync();
+            return CreatedAtAction(nameof(Get), new { id = prop.PropertyId }, ToResponse(prop));
+        }
+
+        private static PropertyResponse ToResponse(Property p) => new(
+            p.PropertyId, p.Address, p.Suburb, p.Postcode, p.State,
+            p.Bedrooms, p.Bathrooms, p.CarSpaces, p.PetsAllowed,
+            p.WeeklyRent, p.OrganisationId
+        );
+    }
 }
