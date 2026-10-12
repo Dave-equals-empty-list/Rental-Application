@@ -1,0 +1,25 @@
+/* Investorgate design tokens, taken from the login style guide */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Colour */
+  --ig-blue: #0b5ed7;        /* primary: buttons, links, showcase panel */
+  --ig-blue-deep: #0849b0;   /* hover / pressed */
+  --ig-blue-soft: #e8f0fd;   /* focus ring, info notices */
+  --ig-ink: #0f1b3d;         /* headings */
+  --ig-slate: #5a6478;       /* body copy */
+  --ig-muted: #8a93a6;       /* placeholders, icons */
+  --ig-line: #dce2ec;        /* borders, dividers */
+  --ig-mist: #f5f7fb;        /* input fill */
+  --ig-canvas: #d8dde4;      /* page backdrop */
+  --ig-glow: #ffd983;        /* lit windows on the loading screen only */
+  --ig-danger: #b42332;
+  --ig-danger-soft: #fdecee;
+
+  /* Type */
+  --ig-font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Radius: card > control */
+  --ig-radius-card: 20px;
+  --ig-radius-control: 8px;
+}
